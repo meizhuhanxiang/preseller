@@ -9,7 +9,7 @@ import tornado.web
 import json
 from tornado.options import define, options
 
-define("port", default=9999, help="run on the given port", type=int)
+define("port", default=9888, help="run on the given port", type=int)
 
 
 class CommodityIndexHandler(tornado.web.RequestHandler):
@@ -384,7 +384,7 @@ class DDLAddressesHandler(tornado.web.RequestHandler):
 if __name__ == '__main__':
     tornado.options.parse_command_line()
     app = tornado.web.Application(
-        # (\d+)表示数字，例如想请求商品主页接口CommodityIndexHandler，url:http://101.201.196.67:9999/commodity/324234242423,
+        # (\d+)表示数字，例如想请求商品主页接口CommodityIndexHandler，url:http://101.201.196.67:9888/commodity/324234242423,
         handlers=[
             (r'/commodity/(\d+)', CommodityIndexHandler),  # 商品主页，在微信中发布商品信息用到展示商品信息接口
             (r'/recomends/(\d+)', RecommendHandler),  # 靠谱推荐接口
