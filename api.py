@@ -133,7 +133,7 @@ class PurchaseConfirmHandler(tornado.web.RequestHandler):
             'code': '123465789542525'  # 返回商品的订单id
         }
         # 返回数据，如果reason为空则表示成功，否则表示出错
-        self.write({'reason': '', 'res': res})
+        self.write(json.dumps({'reason': '', 'res': res}))
 
 
 class PurchaseModifyHandler(tornado.web.RequestHandler):
@@ -160,7 +160,7 @@ class PurchaseModifyHandler(tornado.web.RequestHandler):
             'code': '123465789542525'  # 返回商品的订单id
         }
         # 返回数据，如果reason为空则表示成功，否则表示出错
-        self.write({'reason': '', 'res': res})
+        self.write(json.dumps({'reason': '', 'res': res}))
 
 
 class GetOrderByCodesHandler(tornado.web.RequestHandler):
