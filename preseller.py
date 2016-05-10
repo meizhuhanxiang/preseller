@@ -11,8 +11,16 @@ from tornado.options import define, options
 
 define("port", default=9888, help="run on the given port", type=int)
 
+class BaseHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header('Access-Control-Allow-Origin', '*')
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.set_header('Access-Control-Max-Age', 1000)
+        self.set_header('Access-Control-Allow-Headers', '*')
+        self.set_header('Content-type', 'application/json')
 
-class CommodityIndexHandler(tornado.web.RequestHandler):
+
+class CommodityIndexHandler(BaseHandler):
     def get(self, seed_id):
         res = {
             'title': 'G-STEPS卫衣预售',
@@ -44,7 +52,7 @@ class CommodityIndexHandler(tornado.web.RequestHandler):
         self.write(json.dumps({'reason': '', 'res': res}))
 
 
-class RecommendHandler(tornado.web.RequestHandler):
+class RecommendHandler(BaseHandler):
     def get(self, seed_id):
         res = [
             {
@@ -66,7 +74,7 @@ class RecommendHandler(tornado.web.RequestHandler):
         self.write(json.dumps({'reason': '', 'res': res}))
 
 
-class PublisherHandler(tornado.web.RequestHandler):
+class PublisherHandler(BaseHandler):
     def get(self, seed_id):
         # a = self.get_argument('noun1')
         res = {
@@ -83,7 +91,7 @@ class PublisherHandler(tornado.web.RequestHandler):
         self.write(json.dumps({'reason': '', 'res': res}))
 
 
-class PurchaseDetailHandler(tornado.web.RequestHandler):
+class PurchaseDetailHandler(BaseHandler):
     def get(self, seed_id):
         res = {
             'navigation_img': 'img/navigation.jpg',
@@ -110,7 +118,7 @@ class PurchaseDetailHandler(tornado.web.RequestHandler):
         self.write(json.dumps({'reason': '', 'res': res}))
 
 
-class PurchaseConfirmHandler(tornado.web.RequestHandler):
+class PurchaseConfirmHandler(BaseHandler):
     def post(self, seed_id):
         # 期望接收到的post_json
         # {
@@ -136,7 +144,7 @@ class PurchaseConfirmHandler(tornado.web.RequestHandler):
         self.write({'reason': '', 'res': res})
 
 
-class PurchaseModifyHandler(tornado.web.RequestHandler):
+class PurchaseModifyHandler(BaseHandler):
     def post(self, seed_id):
         # 期望接收到的post_json
         # {
@@ -163,7 +171,7 @@ class PurchaseModifyHandler(tornado.web.RequestHandler):
         self.write({'reason': '', 'res': res})
 
 
-class GetOrderByCodesHandler(tornado.web.RequestHandler):
+class GetOrderByCodesHandler(BaseHandler):
     def post(self):
         # 期望接收到的post_json
         # {'codes':['123465789542525', '223465789543242']}
@@ -222,7 +230,7 @@ class GetOrderByCodesHandler(tornado.web.RequestHandler):
         self.write(json.dumps({'reason': '', 'res': res}))
 
 
-class DeleteOrdersHandler(tornado.web.RequestHandler):
+class DeleteOrdersHandler(BaseHandler):
     def post(self):
         # 期望接收到的post_json
         # {'codes':['123465789542525', '223465789543242']}
@@ -231,7 +239,7 @@ class DeleteOrdersHandler(tornado.web.RequestHandler):
         self.write(json.dumps({'reason': '', 'res': res}))
 
 
-class MyOrdersHandler(tornado.web.RequestHandler):
+class MyOrdersHandler(BaseHandler):
     # order_status  wait_pay(代付款)、wait_send(待发货)、wait_receive(待收货)、已完成
     def get(self, order_status):
         res = [
@@ -289,11 +297,11 @@ class MyOrdersHandler(tornado.web.RequestHandler):
         self.write(json.dumps({'reason': '', 'res': res}))
 
 
-class PaymentHandler(tornado.web.RequestHandler):
+class PaymentHandler(BaseHandler):
     pass
 
 
-class AddressesHandler(tornado.web.RequestHandler):
+class AddressesHandler(BaseHandler):
     def get(self):
         res = [
             {
@@ -321,7 +329,7 @@ class AddressesHandler(tornado.web.RequestHandler):
         self.write(json.dumps({'reason': '', 'res': res}))
 
 
-class DDLAddressesHandler(tornado.web.RequestHandler):
+class DDLAddressesHandler(BaseHandler):
     def post(self):
         ddl = self.get_argument('ddl')
         # 期望接收到的post_json
