@@ -9,7 +9,7 @@ import tornado.web
 import json
 from tornado.options import define, options
 
-define("port", default=9888, help="run on the given port", type=int)
+define("port", default=10001, help="run on the given port", type=int)
 
 class BaseHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
@@ -411,20 +411,20 @@ class DDLAddressesHandler(BaseHandler):
 if __name__ == '__main__':
     tornado.options.parse_command_line()
     app = tornado.web.Application(
-        # (\d+)表示数字，例如想请求商品主页接口CommodityIndexHandler，url:http://101.201.196.67:9888/commodity/324234242423,
+        # (\d+)表示数字，例如想请求商品主页接口CommodityIndexHandler，url:http://test.preseller.gsteps.cn/api/commodity/324234242423,
         handlers=[
-            (r'/commodity/(\d+)', CommodityIndexHandler),  # 商品主页，在微信中发布商品信息用到展示商品信息接口
-            (r'/recomends/(\d+)', RecommendHandler),  # 靠谱推荐接口
-            (r'/publisher/(\d+)', PublisherHandler),  # 发布方信息接口
-            (r'/purchase_detail/(\d+)', PurchaseDetailHandler),  # 商品详情
-            (r'/purchase_confirm/(\d+)', PurchaseConfirmHandler),  # 商品确认接口，用户下订单（在我们的场景中为加入购物车）
-            (r'/purchase_modify/(\d+)', PurchaseModifyHandler),  # 修改购物袋（即待付款）中商品的订单信息
+            (r'/api/commodity/(\d+)', CommodityIndexHandler),  # 商品主页，在微信中发布商品信息用到展示商品信息接口
+            (r'/api/recomends/(\d+)', RecommendHandler),  # 靠谱推荐接口
+            (r'/api/publisher/(\d+)', PublisherHandler),  # 发布方信息接口
+            (r'/api/purchase_detail/(\d+)', PurchaseDetailHandler),  # 商品详情
+            (r'/api/purchase_confirm/(\d+)', PurchaseConfirmHandler),  # 商品确认接口，用户下订单（在我们的场景中为加入购物车）
+            (r'/api/purchase_modify/(\d+)', PurchaseModifyHandler),  # 修改购物袋（即待付款）中商品的订单信息
             # 用户商品信息接口，根据提供不同的状态，返回不同状态的订单 wait_pay(代付款)、wait_send(待发货)、wait_receive(待收货)、complete（已完成）
-            (r'/my_orders/(\S+)', MyOrdersHandler),
-            (r'/get_order_by_codes/', GetOrderByCodesHandler),  # 根据订单编号列表返回相应的订单列表
-            (r'/delete_orders/', DeleteOrdersHandler),  # 删除订单
-            (r'/addresses/', AddressesHandler),  # 获取用户地址信息接口
-            (r'/ddl_addresses/', DDLAddressesHandler),  # 对用户地址进行增删改的接口
+            (r'/api/my_orders/(\S+)', MyOrdersHandler),
+            (r'/api/get_order_by_codes/', GetOrderByCodesHandler),  # 根据订单编号列表返回相应的订单列表
+            (r'/api/delete_orders/', DeleteOrdersHandler),  # 删除订单
+            (r'/api/addresses/', AddressesHandler),  # 获取用户地址信息接口
+            (r'/api/ddl_addresses/', DDLAddressesHandler),  # 对用户地址进行增删改的接口
         ],
         template_path=os.path.join(os.path.dirname(__file__), "templates")
     )
