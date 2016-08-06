@@ -19,6 +19,7 @@ downloads/
 eggs/
 opends.conf*
 nohup.out
+global_conf.py*
 handle_binlog_time
 binlog_time*
 myout*
