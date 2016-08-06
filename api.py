@@ -151,7 +151,7 @@ class CartAddHandler(BaseHandler):
 
 
 class CartDeleteHandler(BaseHandler):
-    def post(self, seed_id):
+    def post(self):
         # 期望接收到的post_json
         # ['asfasdf', 'asdf'] #想要从购物车中删除的cart_id列表
 
@@ -553,7 +553,7 @@ if __name__ == '__main__':
             (r'/api/recomends/(\d+)', RecommendHandler),  # 靠谱推荐接口
             (r'/api/publisher/(\d+)', PublisherHandler),  # 发布方信息接口
             (r'/api/purchase/detail/(\d+)', PurchaseDetailHandler),  # 商品详情
-            (r'/api/cart/add/', CartAddHandler),  # 加入购物车
+            (r'/api/cart/add/(\d+)', CartAddHandler),  # 加入购物车
             (r'/api/cart/delete/', CartDeleteHandler),  # 从购物车中删除
             (r'/api/cart/modify/', CartModifyHandler),  # 修改购物车中商品信息
             (r'/api/cart/detail/', CartDetailHandler),  # 根据购物车id列表获取购物车详情
