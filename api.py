@@ -557,6 +557,7 @@ if __name__ == '__main__':
             (r'/api/cart/delete/', CartDeleteHandler),  # 从购物车中删除
             (r'/api/cart/modify/', CartModifyHandler),  # 修改购物车中商品信息
             (r'/api/cart/detail/', CartDetailHandler),  # 根据购物车id列表获取购物车详情
+            (r'/api/cart/all/', CartAllHandler),  # 根据购物车id列表获取购物车详情
             (r'/api/order/add', OrderAddHandler),  # 下订单，需要提供购物车列表和物流id
             # 用户商品信息接口，根据提供不同的状态，返回不同状态的订单 wait_pay(代付款)、wait_send(待发货)、wait_receive(待收货)、complete（已完成）
             (r'/api/order/status', OrderStatusHandler),  # 根据订单状态获取订单详情
