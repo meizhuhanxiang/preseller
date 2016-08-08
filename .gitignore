@@ -20,6 +20,7 @@ eggs/
 opends.conf*
 nohup.out
 global_conf.py*
+app.ini
 handle_binlog_time
 binlog_time*
 myout*
