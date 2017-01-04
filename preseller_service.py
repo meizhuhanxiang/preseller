@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+# coding: utf-8
 import os
 import sys
 import glob
@@ -11,6 +11,7 @@ import tornado.httpserver
 import utils.test
 import utils.config
 import utils.logger
+from optparse import OptionParser
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -45,7 +46,13 @@ class OpenDSApplication(tornado.web.Application):
 
 
 def main():
-    port = utils.config.get("global", "port")
+    parser = OptionParser(usage="usage:%prog [options] filepath")
+    parser.add_option("-p", "--port",
+                      action="store", type="string", default="", dest="port")
+    (options, args) = parser.parse_args()
+    port = options.port
+    if not port:
+        port = utils.config.get("global", "port")
     debug_mode = int(utils.config.get('global', 'debug'))
 
     sys.stderr.write("listen server on port %s ...\n" % port)
@@ -59,4 +66,5 @@ def main():
 
 
 if __name__ == '__main__':
+    from model.config import Configure
     main()

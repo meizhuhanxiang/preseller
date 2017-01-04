@@ -4,7 +4,7 @@ import MySQLdb
 import MySQLdb.cursors as cursors
 from DBUtils.PooledDB import PooledDB
 from tools.global_conf import *
-from WRONG_CODE import *
+from code import *
 
 
 def singleton(cls, *args, **kw):
