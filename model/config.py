@@ -66,7 +66,7 @@ class Configure(object):
             self.session.rollback()
             raise e
 
-    def first(self, model, **kwargs):
+    def first(self, model, is_del=0, **kwargs):
         """
 
         Args:
@@ -75,10 +75,11 @@ class Configure(object):
 
         Returns:
         """
+        kwargs['is_del'] = is_del
         result = self.session.query(model).filter_by(**kwargs).first()
         return result
 
-    def filter_all(self, model, filters, **kwargs):
+    def filter_all(self, model, filters, is_del=0, **kwargs):
         """
 
         Args:
@@ -87,10 +88,11 @@ class Configure(object):
 
         Returns:
         """
+        kwargs['is_del'] = is_del
         result = self.session.query(model).filter(filters).filter_by(**kwargs).all()
         return result
 
-    def all(self, model, filters=None, page=None, order_by=None, filter_by=None, **kwargs):
+    def all(self, model, filters=None, page=None, order_by=None, filter_by=None, is_del=0, **kwargs):
         query = self.session.query(model)
 
         if order_by:
@@ -100,6 +102,7 @@ class Configure(object):
             kwargs.update(filter_by)
         if filters:
             query = query.filter(filters)
+        kwargs['is_del'] = is_del
         query = query.filter_by(**kwargs)
 
         if page:
@@ -108,7 +111,8 @@ class Configure(object):
         result = query.all()
         return result
 
-    def count(self, model, **kwargs):
+    def count(self, model, is_del=0, **kwargs):
+        kwargs['is_del'] = is_del
         return self.session.query(model).filter_by(**kwargs).count()
 
     def tick(self, instance):

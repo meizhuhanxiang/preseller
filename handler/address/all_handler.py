@@ -1,32 +1,40 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import json
-from handler.base.base_handler import BaseHandler
+from handler.base.base_handler import BaseHandler, handler
+from model import AddressModel
+from model import ModelConfig
 
 
 class AllHandler(BaseHandler):
-    def get(self):
-        res = [
-            {
-                'name': '范晓宇',
-                'country': '中国',
-                'province': '北京市',
-                'region': '朝阳区',
-                'address': '酒仙桥6号院电子国际总部',
-                'phone': '13552266949',
-                'default': 1,  # 默认收获地址
-                'address_id': 1,  # 地址id,整个系统唯一
-            },
-            {
-                'name': '李颖',
-                'country': '中国',  # 国家
-                'province': '北京市',  # 省(直辖市)
-                'region': '朝阳区',  # 县(区)
-                'address': '酒仙桥6号院电子国际总部',  # 具体地址
-                'phone': '18966677772',
-                'default': 0,  # 非默认收获地址
-                'address_id': 2,  # 地址id,整个系统唯一
+    @handler
+    def post(self):
+        address_ids = self.get_json_argument("address_ids", [], allow_null=True)
+        model_config = ModelConfig()
+        res = {
+            "default": None,
+            "other": []
+        }
+        address_models = model_config.all(AddressModel, user_id=1)
+        for address_model in address_models:  # type:AddressModel
+            address = {
+                "id":address_model.id,
+                "name": address_model.name,
+                "country": address_model.country,
+                "province": address_model.province,
+                "municipality": address_model.municipality,
+                "region": address_model.region,
+                "phone": address_model.phone,
+                "default": address_model.default
             }
-        ]
-        # 返回数据，如果reason为空则表示成功，否则表示出错
-        self.write(json.dumps({'reason': '', 'res': res}))
+            if address_model.default:
+                if res["default"]:
+                    address_model.default = False
+                    res['default'] = False
+                    res['other'].append(address)
+                else:
+                    res["default"] = address
+            else:
+                res['other'].append(address)
+        model_config.flush()
+        model_config.commit()
+        return res

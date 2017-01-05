@@ -1,32 +1,36 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import json
-from handler.base.base_handler import BaseHandler
+from handler.base.base_handler import BaseHandler, handler
+from model import AddressModel
+from model import ModelConfig
 
 
 class ModifyHandler(BaseHandler):
+    @handler
     def post(self):
-        # 期望接收到的post_json
-        # 修改地址时:
-        # {
-        #     'ddl':'change'   #值必须是change
-        #     'name': '李颖',
-        #     'country': '中国',  # 国家
-        #     'province': '北京市',  # 省(直辖市)
-        #     'region': '朝阳区',  # 县(区)
-        #     'address': '酒仙桥6号院电子国际总部',  # 具体地址
-        #     'phone': '18966677772',
-        #     'default': 0,  # 非默认收获地址
-        #     'address_id': 2,  # 地址id,整个系统唯一
-        # }
-        res = {}
-        address_id = self.get_argument('address_id')
-        name = self.get_argument('name')
-        country = self.get_argument('country')
-        province = self.get_argument('province')
-        region = self.get_argument('region')
-        address = self.get_argument('address')
-        phone = self.get_argument('phone')
-        default = self.get_argument('phone')
-        # 返回数据，如果reason为空则表示成功，否则表示出错
-        self.write(json.dumps({'reason': '', 'res': res}))
+        address_id = self.get_json_argument('address_id')
+        name = self.get_json_argument('name', '', allow_null=True)
+        country = self.get_json_argument('country')
+        province = self.get_json_argument('province')
+        municipality = self.get_json_argument('municipality')
+        region = self.get_json_argument('region')
+        address = self.get_json_argument('address')
+        phone = self.get_json_argument('phone')
+        default = self.get_json_argument('default')
+
+        model_config = ModelConfig()
+        if True == default:
+            address_models = model_config.all(AddressModel, default=True)
+            for address_model in address_models:  # type:AddressModel
+                address_model.default = False
+        address_model = model_config.first(AddressModel, user_id=1, id=address_id)  # type:AddressModel
+        address_model.name = name
+        address_model.country = country
+        address_model.province = province
+        address_model.municipality = municipality
+        address_model.region = region
+        address_model.address = address
+        address_model.phone = phone
+        address_model.default = default
+        model_config.flush()
+        model_config.commit()
