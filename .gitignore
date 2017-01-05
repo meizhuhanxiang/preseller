@@ -1,50 +1,35 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*$py.class
 
 # C extensions
 *.so
 
+#project---------------------------
+conf/app.ini
+test*
+log/
+nohup.out
+#project---------------------------
+
 # Distribution / packaging
 .Python
-.DS_Store
 env/
 build/
-supervisor
 develop-eggs/
 dist/
 downloads/
 eggs/
-opends.conf*
-nohup.out
-global_conf.py*
-app.ini
-handle_binlog_time
-binlog_time*
-myout*
-binlogs/
-check/
-conf/check_time.conf*
-conf/opends.conf*
-cache
-conf/prefilter/*
-runtime
 .eggs/
-test*
-nohup.out
-table_structure.conf
+lib/
 lib64/
 parts/
 sdist/
-db_cache/
-/script
 var/
+wheels/
 *.egg-info/
 .installed.cfg
-/icon
-/conf/text_date
 *.egg
 
 # PyInstaller
@@ -57,35 +42,57 @@ var/
 pip-log.txt
 pip-delete-this-directory.txt
 
-/conf/tmp.conf
 # Unit test / coverage reports
 htmlcov/
-/where
 .tox/
 .coverage
 .coverage.*
 .cache
 nosetests.xml
-/log
-/www/log
 coverage.xml
 *,cover
+.hypothesis/
 
 # Translations
 *.mo
 *.pot
 
+# Django stuff:
+*.log
+local_settings.py
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
 # Sphinx documentation
 docs/_build/
-/release_for_unix.sh
 
 # PyBuilder
 target/
 
-# PyCharm
-.idea/
+# Jupyter Notebook
+.ipynb_checkpoints
 
-# project
-/test.txt
-tmp/
-]
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# dotenv
+.env
+
+# virtualenv
+.venv/
+venv/
+ENV/
+
+# Spyder project settings
+.spyderproject
+
+# Rope project settings
+.ropeproject

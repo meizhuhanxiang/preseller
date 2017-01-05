@@ -8,7 +8,6 @@ import handler
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
-import utils.test
 import utils.config
 import utils.logger
 from optparse import OptionParser
