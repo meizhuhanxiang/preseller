@@ -9,7 +9,7 @@ class DeleteHandler(BaseHandler):
     @handler
     def post(self):
         address_id = self.get_json_argument('address_id')
-        model_config = ModelConfig()
-        address_model = model_config.first(AddressModel, user_id=1, id=address_id)
+
+        address_model = self.model_config.first(AddressModel, user_id=1, id=address_id)
         if address_model:
-            model_config.delete(address_model)
+            self.model_config.delete(address_model)

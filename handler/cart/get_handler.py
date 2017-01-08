@@ -18,26 +18,26 @@ class GetHandler(BaseHandler):
     @handler
     def post(self):
         order_ids = self.get_json_argument('order_ids', default=[], allow_null=True)
-        model_config = ModelConfig()
+
         if not order_ids:
-            order_models = model_config.all(OrderModel, user_id=1, status=OrderModel.STATUS_CART)
+            order_models = self.model_config.all(OrderModel, user_id=1, status=OrderModel.STATUS_CART)
         else:
-            order_models = model_config.filter_all(OrderModel, OrderModel.id.in_(tuple(order_ids)), user_id=1,
-                                                   status=OrderModel.STATUS_CART,
-                                                   )
+            order_models = self.model_config.filter_all(OrderModel, OrderModel.id.in_(tuple(order_ids)), user_id=1,
+                                                        status=OrderModel.STATUS_CART,
+                                                        )
         orders = []
         total_price = 0
         for order_model in order_models:  # type:OrderModel
             selected_option_ids = order_model.selected_option_ids
             commodity_id = order_model.commodity_id
-            commodity_model = model_config.first(CommodityModel, id=commodity_id)  # type:CommodityModel
-            selected_option_models = model_config.filter_all(OptionModel,
-                                                             OptionModel.id.in_(tuple(selected_option_ids)))
+            commodity_model = self.model_config.first(CommodityModel, id=commodity_id)  # type:CommodityModel
+            selected_option_models = self.model_config.filter_all(OptionModel,
+                                                                  OptionModel.id.in_(tuple(selected_option_ids)))
             options = []
             price = commodity_model.base_price
             for selected_option_model in selected_option_models:  # type:OptionModel
-                selected_attribute_model = model_config.first(AttributeModel,
-                                                              id=selected_option_model.attr_id)  # type:CommodityModel
+                selected_attribute_model = self.model_config.first(AttributeModel,
+                                                                   id=selected_option_model.attr_id)  # type:CommodityModel
                 options.append({
                     'attr_name': selected_attribute_model.attr_name,
                     'cn_attr_name': selected_attribute_model.cn_attr_name,

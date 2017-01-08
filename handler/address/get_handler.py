@@ -9,13 +9,12 @@ class GetHandler(BaseHandler):
     @handler
     def post(self):
         address_ids = self.get_json_argument("address_ids", [], allow_null=True)
-        model_config = ModelConfig()
 
         if address_ids:
-            address_models = model_config.filter_all(AddressModel, user_id=1,
-                                                     filters=AddressModel.id.in_(tuple(address_ids)))
+            address_models = self.model_config.filter_all(AddressModel, user_id=1,
+                                                          filters=AddressModel.id.in_(tuple(address_ids)))
         else:
-            address_models = model_config.all(AddressModel, user_id=1)
+            address_models = self.model_config.all(AddressModel, user_id=1)
         res = []
         for address_model in address_models:  # type:AddressModel
             address = {

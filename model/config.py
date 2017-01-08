@@ -120,6 +120,7 @@ class Configure(object):
         instance.tick()
 
     def commit(self):
+        self.session.flush()
         self.session.commit()
 
     def expire(self, instance):
@@ -134,3 +135,6 @@ class Configure(object):
 
     def flush(self):
         self.session.flush()
+
+    def close(self):
+        self.session.close()

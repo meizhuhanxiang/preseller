@@ -18,12 +18,11 @@ class ModifyHandler(BaseHandler):
         phone = self.get_json_argument('phone')
         default = self.get_json_argument('default')
 
-        model_config = ModelConfig()
         if True == default:
-            address_models = model_config.all(AddressModel, default=True)
+            address_models = self.model_config.all(AddressModel, default=True)
             for address_model in address_models:  # type:AddressModel
                 address_model.default = False
-        address_model = model_config.first(AddressModel, user_id=1, id=address_id)  # type:AddressModel
+        address_model = self.model_config.first(AddressModel, user_id=1, id=address_id)  # type:AddressModel
         address_model.name = name
         address_model.country = country
         address_model.province = province
@@ -32,5 +31,5 @@ class ModifyHandler(BaseHandler):
         address_model.address = address
         address_model.phone = phone
         address_model.default = default
-        model_config.flush()
-        model_config.commit()
+
+        self.model_config.commit()

@@ -20,16 +20,16 @@ class AddHandler(BaseHandler):
         commodity_id = self.get_json_argument('commodity_id')
         selected_option_ids = self.get_json_argument('selected_option_ids')
         count = self.get_json_argument('count')
-        model_config = ModelConfig()
-        commodity_model = model_config.all(CommodityModel, id=commodity_id)
-        attribute_models = model_config.all(AttributeModel, commodity_id=commodity_id)
-        selected_option_models = model_config.filter_all(OptionModel,
-                                                            OptionModel.id.in_(tuple(selected_option_ids)))
+
+        commodity_model = self.model_config.all(CommodityModel, id=commodity_id)
+        attribute_models = self.model_config.all(AttributeModel, commodity_id=commodity_id)
+        selected_option_models = self.model_config.filter_all(OptionModel,
+                                                              OptionModel.id.in_(tuple(selected_option_ids)))
         selected_attr_names = []
         for selected_option_model in selected_option_models:  # type:OptionModel
             if selected_option_model.commodity_id != commodity_id:
                 raise ServerError(ServerError.CART_ADD_IDS_NOT_MATCH)
-            attribute_model = model_config.first(AttributeModel, id=selected_option_model.attr_id)
+            attribute_model = self.model_config.first(AttributeModel, id=selected_option_model.attr_id)
             selected_attr_names.append(attribute_model.attr_name)
 
         attr_names = []
@@ -43,4 +43,8 @@ class AddHandler(BaseHandler):
                                  cart_time=datetime.datetime.now(),
                                  order_no=uuid.uuid1(),
                                  status=OrderModel.STATUS_CART)
-        model_config.add(order_model)
+        self.model_config.add(order_model)
+        res = {
+            'order_id': order_model.id
+        }
+        return res

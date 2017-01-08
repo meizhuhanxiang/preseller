@@ -11,7 +11,7 @@ from functools import wraps
 from traceback import print_exc
 from utils.exception import *
 from utils.logger import api_logger
-
+from model import ModelConfig
 
 
 def handler(fun):
@@ -43,10 +43,12 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header('Content-type', 'application/json')
 
     def initialize(self):
+        self.model_config = ModelConfig()
         api_logger().info(
             '%s: %s' % (self.__class__.__name__, re.sub(r'(\\n|\\|\s+)', '', json.dumps(self.request.body))))
 
     def on_finish(self):
+        self.model_config.close()
         self.session.close()
 
     def get_need_args(self, args):

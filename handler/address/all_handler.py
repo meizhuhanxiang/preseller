@@ -9,12 +9,12 @@ class AllHandler(BaseHandler):
     @handler
     def post(self):
         address_ids = self.get_json_argument("address_ids", [], allow_null=True)
-        model_config = ModelConfig()
+
         res = {
             "default": None,
             "other": []
         }
-        address_models = model_config.all(AddressModel, user_id=1)
+        address_models = self.model_config.all(AddressModel, user_id=1)
         for address_model in address_models:  # type:AddressModel
             address = {
                 "id": address_model.id,
@@ -23,7 +23,7 @@ class AllHandler(BaseHandler):
                 "province": address_model.province,
                 "municipality": address_model.municipality,
                 "region": address_model.region,
-                "address":address_model.address,
+                "address": address_model.address,
                 "phone": address_model.phone,
                 "default": address_model.default
             }
@@ -36,6 +36,6 @@ class AllHandler(BaseHandler):
                     res["default"] = address
             else:
                 res['other'].append(address)
-        model_config.flush()
-        model_config.commit()
+
+        self.model_config.commit()
         return res

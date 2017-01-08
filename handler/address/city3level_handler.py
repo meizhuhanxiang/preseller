@@ -10,13 +10,13 @@ class City3levelHandler(BaseHandler):
     @handler
     def post(self):
         model_id = self.get_json_argument('id', None, allow_null=True)
-        model_config = ModelConfig()
+
         res = []
         if not model_id:
-            city_models = model_config.all(CityModel, level=0)
+            city_models = self.model_config.all(CityModel, level=0)
         else:
-            city_model = model_config.first(CityModel, id=model_id)  # type:CityModel
-            city_models = model_config.all(CityModel, parent_id=city_model.id)
+            city_model = self.model_config.first(CityModel, id=model_id)  # type:CityModel
+            city_models = self.model_config.all(CityModel, parent_id=city_model.id)
         for city_model in city_models:  # type:CityModel
             res.append({
                 'id': city_model.id,

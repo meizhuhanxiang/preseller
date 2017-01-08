@@ -14,11 +14,11 @@ class IndexHandler(BaseHandler):
     @handler
     def post(self):
         commodity_id = self.get_json_argument('commodity_id')
-        model_config = ModelConfig()
-        commodity_model = model_config.first(CommodityModel, id=commodity_id)  # type: CommodityModel
-        publisher_model = model_config.first(PublisherModel, id=commodity_model.publisher_id)  # type: PublisherModel
-        recommend_models = model_config.all(RecommendModel, commodity_id=commodity_model.id)  # type: RecommendModel
-        order_models = model_config.all(OrderModel, user_id=1, status=OrderModel.STATUS_CART)
+
+        commodity_model = self.model_config.first(CommodityModel, id=commodity_id)  # type: CommodityModel
+        publisher_model = self.model_config.first(PublisherModel, id=commodity_model.publisher_id)  # type: PublisherModel
+        recommend_models = self.model_config.all(RecommendModel, commodity_id=commodity_model.id)  # type: RecommendModel
+        order_models = self.model_config.all(OrderModel, user_id=1, status=OrderModel.STATUS_CART)
         res = {
             'commodity_id': commodity_id,  # 商品id
             'title': commodity_model.title,
@@ -33,7 +33,7 @@ class IndexHandler(BaseHandler):
         }
         recommends = []
         for recommend_model in recommend_models:  # type: RecommendModel
-            user_model = model_config.first(UserModel, id=recommend_model.user_id, is_v=1)  # type: UserModel
+            user_model = self.model_config.first(UserModel, id=recommend_model.user_id, is_v=1)  # type: UserModel
             recommends.append({
                 'profile': user_model.profile,
                 'name': user_model.name,

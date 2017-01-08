@@ -17,15 +17,15 @@ class AttributeHandler(BaseHandler):
         commodity_id = self.get_json_argument('commodity_id')
         selected_option_ids = self.get_json_argument('selected_option_ids', default=[], allow_null=True)
         count = self.get_json_argument('count', default=1, allow_null=True)
-        model_config = ModelConfig()
-        commodity_model = model_config.first(CommodityModel, id=commodity_id)  # type: CommodityModel
-        attribute_models = model_config.all(AttributeModel, commodity_id=commodity_id)
-        selected_option_models = model_config.filter_all(OptionModel,
-                                                         OptionModel.id.in_(tuple(selected_option_ids)))
+
+        commodity_model = self.model_config.first(CommodityModel, id=commodity_id)  # type: CommodityModel
+        attribute_models = self.model_config.all(AttributeModel, commodity_id=commodity_id)
+        selected_option_models = self.model_config.filter_all(OptionModel,
+                                                              OptionModel.id.in_(tuple(selected_option_ids)))
         selected_attr_names = []
         for selected_option_model in selected_option_models:  # type:OptionModel
-            attribute_model = model_config.first(AttributeModel,
-                                                 id=selected_option_model.attr_id)  # type:AttributeModel
+            attribute_model = self.model_config.first(AttributeModel,
+                                                      id=selected_option_model.attr_id)  # type:AttributeModel
             selected_attr_names.append(attribute_model.attr_name)
         res = {
             'commodity_id': commodity_id,
@@ -41,7 +41,7 @@ class AttributeHandler(BaseHandler):
                 'index': attribute_model.index,
                 'options': []
             }
-            option_models = model_config.all(OptionModel, attr_id=attribute_model.id)
+            option_models = self.model_config.all(OptionModel, attr_id=attribute_model.id)
             options = []
             for option_model in option_models:  # type:OptionModel
                 option = {
@@ -100,6 +100,6 @@ class AttributeHandler(BaseHandler):
             self.get_inner_static_path(), commodity_id, selected_first_option)
         res['price'] = price * count
         res['attributes'] = attributes
-        model_config.flush()
-        model_config.commit()
+
+        self.model_config.commit()
         return res
