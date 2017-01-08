@@ -1,0 +1,3 @@
+[submodule "wechatpy"]
+	path = wechatpy
+	url = git@github.com:meizhuhanxiang/wechatpy.git

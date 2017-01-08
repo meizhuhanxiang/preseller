@@ -25,6 +25,7 @@ class GetHandler(BaseHandler):
                 "province": address_model.province,
                 "municipality": address_model.municipality,
                 "region": address_model.region,
+                "address": address_model.address,
                 "phone": address_model.phone,
                 "default": address_model.default
             }

@@ -17,12 +17,13 @@ class AllHandler(BaseHandler):
         address_models = model_config.all(AddressModel, user_id=1)
         for address_model in address_models:  # type:AddressModel
             address = {
-                "id":address_model.id,
+                "id": address_model.id,
                 "name": address_model.name,
                 "country": address_model.country,
                 "province": address_model.province,
                 "municipality": address_model.municipality,
                 "region": address_model.region,
+                "address":address_model.address,
                 "phone": address_model.phone,
                 "default": address_model.default
             }
