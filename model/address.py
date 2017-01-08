@@ -31,7 +31,7 @@ class AddressModel(Base):
     municipality = Column(String(20), nullable=False, doc="市")
     region = Column(String(20), nullable=False, doc="区县")
     address = Column(String(60), nullable=False)
-    phone = Column(Integer, nullable=False)
+    phone = Column(String(11), nullable=False)
     default = Column(BOOLEAN, nullable=False, server_default='0')
     is_del = Column(BOOLEAN, nullable=False, server_default='0', doc="逻辑删除, true(删除)|false(未删除)")
     update_time = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))

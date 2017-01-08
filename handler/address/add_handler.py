@@ -29,6 +29,6 @@ class AddHandler(BaseHandler):
                                      phone=phone, default=default)
         self.model_config.add(address_model)
         res = {
-            'address_id':address_model.id
+            'address_id': address_model.id
         }
         return res
