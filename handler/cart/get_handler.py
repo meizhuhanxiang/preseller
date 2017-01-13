@@ -45,7 +45,8 @@ class GetHandler(BaseHandler):
                     'cn_option_name': selected_option_model.cn_option_name,
                     'option_id': selected_option_model.id
                 })
-                selected_first_option = selected_option_model.option_name
+                if selected_attribute_model.index == 1:
+                    selected_first_option = selected_option_model.option_name
                 price += selected_option_model.weight
             total_price += price * order_model.count
             order = {
