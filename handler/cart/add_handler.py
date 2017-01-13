@@ -44,7 +44,9 @@ class AddHandler(BaseHandler):
                                  order_no=uuid.uuid1(),
                                  status=OrderModel.STATUS_CART)
         self.model_config.add(order_model)
+        order_models = self.model_config.all(OrderModel, user_id=1, status=OrderModel.STATUS_CART)
         res = {
-            'order_id': order_model.id
+            'order_id': order_model.id,
+            'cart_count': len(order_models),  # 购物袋中商品的数量
         }
         return res

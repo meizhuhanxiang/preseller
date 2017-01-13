@@ -45,6 +45,7 @@ class GetHandler(BaseHandler):
                     'cn_option_name': selected_option_model.cn_option_name,
                     'option_id': selected_option_model.id
                 })
+                selected_first_option = selected_option_model.option_name
                 price += selected_option_model.weight
             total_price += price * order_model.count
             order = {
@@ -54,6 +55,8 @@ class GetHandler(BaseHandler):
                 'commodity_title': commodity_model.title,
                 'count': order_model.count,
                 'options': options,
+                'thumbnail': '/%s/preseller/img/commodity/%s/attribute/%s.jpg' % (
+                    self.get_inner_static_path(), commodity_id, selected_first_option),
                 'price': price * order_model.count
 
             }
