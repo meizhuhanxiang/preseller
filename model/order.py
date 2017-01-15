@@ -37,6 +37,7 @@ class OrderModel(Base):
     receive_time = Column(TIMESTAMP, nullable=True, doc="收货时间")
     complete_time = Column(TIMESTAMP, nullable=True, doc="确认完成时间")
     close_time = Column(TIMESTAMP, nullable=True, doc="关闭订单时间")
+    close_type = Column(Integer, nullable=True, doc='订单被关闭的类型')
     is_del = Column(BOOLEAN, nullable=False, server_default='0', doc="逻辑删除, true(删除)|false(未删除)")
     update_time = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     create_time = Column(TIMESTAMP, nullable=False, server_onupdate=text("CURRENT_TIMESTAMP"))

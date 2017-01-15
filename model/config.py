@@ -138,3 +138,4 @@ class Configure(object):
 
     def close(self):
         self.session.close()
+        self.session.remove()
