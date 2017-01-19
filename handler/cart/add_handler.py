@@ -41,7 +41,7 @@ class AddHandler(BaseHandler):
         order_model = OrderModel(user_id=1, commodity_id=commodity_id,
                                  selected_option_ids=list(set(selected_option_ids)), count=count,
                                  cart_time=datetime.datetime.now(),
-                                 order_no=uuid.uuid1().replace('-', ''),
+                                 order_no=str(uuid.uuid1()).replace('-', ''),
                                  status=OrderModel.STATUS_CART)
         self.model_config.add(order_model)
         self.model_config.commit()

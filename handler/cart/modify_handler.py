@@ -20,6 +20,8 @@ class ModifyHandler(BaseHandler):
         count = self.get_json_argument('count')
 
         order_model = self.model_config.first(OrderModel, user_id=1, id=order_id)  # type:OrderModel
+        if not order_model:
+                raise ServerError(ServerError.ORDER_ID_ILLEGEL, args=order_id)
         commodity_id = order_model.commodity_id
         commodity_model = self.model_config.all(CommodityModel, id=commodity_id)
         attribute_models = self.model_config.all(AttributeModel, commodity_id=order_model.commodity_id)

@@ -20,7 +20,7 @@ class DeleteHandler(BaseHandler):
         order_ids = self.get_json_argument('order_ids')
 
         order_models = self.model_config.filter_all(OrderModel, user_id=1, status=OrderModel.STATUS_CART,
-                                                    filters=OrderModel.order_no.in_(tuple(order_ids)))
+                                                    filters=OrderModel.id.in_(tuple(order_ids)))
         for order_model in order_models:  # type:OrderModel
             order_model.is_del = True
             order_model.status = OrderModel.STATUS_CLOSE

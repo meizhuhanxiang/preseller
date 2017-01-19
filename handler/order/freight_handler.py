@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import json
-from handler.base.base_handler import BaseHandler
+from handler.base.base_handler import BaseHandler, handler
 import uuid
 from model import OrderModel
 from model import AddressModel
@@ -15,7 +15,8 @@ from wechatpy.pay.api import WeChatOrder
 
 
 class FreightHandler(BaseHandler):
+    @handler
     def post(self):
-        order_ids = self.get_json_argument('orderids')
+        order_ids = self.get_json_argument('order_ids')
         address_id = self.get_json_argument('address_id')
         return {"freight": 5}

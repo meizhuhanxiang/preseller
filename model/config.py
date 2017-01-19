@@ -66,7 +66,7 @@ class Configure(object):
             self.session.rollback()
             raise e
 
-    def first(self, model, is_del=0, **kwargs):
+    def first(self, model, is_del=False, **kwargs):
         """
 
         Args:
@@ -79,7 +79,7 @@ class Configure(object):
         result = self.session.query(model).filter_by(**kwargs).first()
         return result
 
-    def filter_all(self, model, filters, is_del=0, **kwargs):
+    def filter_all(self, model, filters, is_del=False, **kwargs):
         """
 
         Args:
@@ -92,7 +92,7 @@ class Configure(object):
         result = self.session.query(model).filter(filters).filter_by(**kwargs).all()
         return result
 
-    def all(self, model, filters=None, page=None, order_by=None, filter_by=None, is_del=0, **kwargs):
+    def all(self, model, filters=None, page=None, order_by=None, filter_by=None, is_del=False, **kwargs):
         query = self.session.query(model)
 
         if order_by:
@@ -111,7 +111,7 @@ class Configure(object):
         result = query.all()
         return result
 
-    def count(self, model, is_del=0, **kwargs):
+    def count(self, model, is_del=False, **kwargs):
         kwargs['is_del'] = is_del
         return self.session.query(model).filter_by(**kwargs).count()
 
