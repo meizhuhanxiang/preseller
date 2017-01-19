@@ -30,7 +30,7 @@ class OrderModel(Base):
 
     address_id = Column(Integer, nullable=True, doc="收货人信息")
     order_no = Column(String(30), nullable=True, doc="货物订单号")
-    pay_order_no = Column(String(30), nullable=True, doc="支付订单号")
+    out_trade_no = Column(String(30), nullable=True, doc="统一支付订单号")
     cart_time = Column(TIMESTAMP, nullable=True, doc="加入购物车时间")
     pay_time = Column(TIMESTAMP, nullable=True, doc="付款时间")
     send_time = Column(TIMESTAMP, nullable=True, doc="发货时间")
