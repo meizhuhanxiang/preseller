@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session, Session
 from sqlalchemy import desc
 import utils.config
 from model import *
+from utils.exception import DatabaseError
 
 __author__ = 'guoguangchuan'
 
@@ -120,8 +121,12 @@ class Configure(object):
         instance.tick()
 
     def commit(self):
-        self.session.flush()
-        self.session.commit()
+        try:
+            self.session.flush()
+            self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            raise DatabaseError(DatabaseError.DATABASE_COMMIT_ERROR, args=str(e))
 
     def expire(self, instance):
         self.session.expire(instance)

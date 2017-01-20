@@ -35,7 +35,7 @@ class LocalServerError(BaseError):
 
 class DatabaseError(BaseError):
     BASE_CODE = 10000
-
+    DATABASE_COMMIT_ERROR = (1, 'Database commit error:{args}', '提交数据库发生错误, 已回滚请重试, 错误信息:{args}')
 
 class NetworkError(BaseError):
     BASE_CODE = 20000
