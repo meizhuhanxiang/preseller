@@ -19,28 +19,11 @@ db_database = utils.config.get("preseller_db", "database")
 
 engine = create_engine(
     'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % (db_user, db_pssswd, db_host, db_port, db_database))
-db_session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
+#db_session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
+db_session = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
-Base.query = db_session.query_property()
-Base.metadata.create_all(engine, checkfirst=True)
-
-BUSY_TIME_OUT = 60 * 1000
-
-
-@event.listens_for(engine, 'connect')
-def set_busy_timeout(dbapi_connection, connection_record):
-    """
-        Set sqlite busy timeout for lock problem.
-        See Also: http://jira.haizhi.com/browse/BDP-11760
-    Args:
-        dbapi_connection(Connection):
-        connection_record:
-    """
-    cursor = dbapi_connection.cursor()  # type: Cursor
-    try:
-        cursor.execute('PRAGMA busy_timeout={timeout}'.format(timeout=BUSY_TIME_OUT))
-    finally:
-        cursor.close()
+#Base.query = db_session.query_property()
+#Base.metadata.create_all(engine, checkfirst=True)
 
 
 class Configure(object):

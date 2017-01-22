@@ -65,5 +65,5 @@ def main():
 
 
 if __name__ == '__main__':
-    from model.config import Configure
+    #from model.config import Configure
     main()
