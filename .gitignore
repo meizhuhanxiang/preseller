@@ -10,6 +10,10 @@ __pycache__/
 conf/app.ini
 test*
 log/
+conf/apiclient_cert.p12
+conf/apiclient_cert.pem
+conf/apiclient_key.pem
+conf/rootca.pem
 nohup.out
 #project---------------------------
 

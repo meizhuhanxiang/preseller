@@ -44,7 +44,8 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def initialize(self):
         self.model_config = ModelConfig()
-        api_logger().info(
+        self.logger = api_logger()
+        self.logger.info(
             '%s: %s' % (self.__class__.__name__, re.sub(r'(\\n|\\|\s+)', '', json.dumps(self.request.body))))
 
     def on_finish(self):

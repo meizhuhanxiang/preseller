@@ -380,12 +380,10 @@ class UnifiedOrder_pub(Wxpay_client_pub):
         res = {}
         return_msg = self.result['return_msg']
         if return_code != 'SUCCESS':
-            code = WECHAT_UNIFIED_ERROR
             msg = return_msg
         else:
             result_code = self.result['result_code']
             if result_code != 'SUCCESS':
-                code = WECHAT_UNIFIED_ERROR
                 msg = self.result['err_code_des']
             else:
                 res["appId"] = WxPayConf_pub.APPID

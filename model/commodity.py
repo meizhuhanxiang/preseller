@@ -29,7 +29,7 @@ class CommodityModel(Base):
     sold_count = Column(Integer, nullable=False, doc="已经卖的数量")
     satisfy_count = Column(Integer, nullable=False, doc="满多少件发货")
     publisher_id = Column(Integer, nullable=False, doc="发布方id")
-    base_price = Column(Float, doc="基础价格")
+    base_price = Column(Integer, doc="基础价格")
     is_del = Column(BOOLEAN, nullable=False, server_default='0', doc="逻辑删除, true(删除1)|false(未删除0)")
     update_time = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     create_time = Column(TIMESTAMP, nullable=False, server_onupdate=text("CURRENT_TIMESTAMP"))
