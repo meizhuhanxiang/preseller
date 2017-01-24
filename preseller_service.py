@@ -11,17 +11,19 @@ import tornado.httpserver
 import utils.config
 import utils.logger
 from optparse import OptionParser
+from utils import session
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class OpenDSApplication(tornado.web.Application):
+class HandlersApplication(tornado.web.Application):
     def __init__(self, api_entry, **settings):
         self.logger = utils.logger.api_logger()
         handlers = self.load_handlers(api_entry)
-        super(OpenDSApplication, self).__init__(handlers, **settings)
-
+        super(HandlersApplication, self).__init__(handlers, **settings)
+        self.session_manager = session.SessionManager(settings["session_secret"], settings["store_options"],
+                                                      settings["session_timeout"])
     def load_handlers(self, m):
         handlers = []
         if hasattr(m, "__all__"):
@@ -55,9 +57,18 @@ def main():
     debug_mode = int(utils.config.get('global', 'debug'))
 
     sys.stderr.write("listen server on port %s ...\n" % port)
-    application = OpenDSApplication(handler, **{
-        'debug': True if debug_mode else False,
-    })
+    settings = dict(
+        debug=True if debug_mode else False,
+        cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
+        session_secret="3cdcb1f00803b6e78ab50b466a40b9977db396840c28307f428b25e2277f1bcc",
+        session_timeout=600,
+        store_options={
+            'redis_host': '127.0.0.1',
+            'redis_port': 6379,
+            'redis_pass': '',
+        }
+    )
+    application = HandlersApplication(handler, **settings)
     server = tornado.httpserver.HTTPServer(application)
     server.bind(port)
     server.start(1 if debug_mode else 15)

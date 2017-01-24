@@ -12,11 +12,14 @@ import utils.config
 from utils.exception import *
 from wechatpy.pay import WeChatPay
 from wechatpy.pay.api import WeChatOrder
+from utils.exception import ServerError
 
 
 class AddHandler(BaseHandler):
     @handler
     def post(self):
+        if not self.session.get('open_id', ''):
+            raise ServerError(ServerError.USER_NO_LOGIN)
         order_ids = self.get_json_argument('order_ids')
         address_id = self.get_json_argument('address_id')
         out_trade_no = str(uuid.uuid1()).replace('-', '')
@@ -54,7 +57,7 @@ class AddHandler(BaseHandler):
                                         mch_key=mch_key).order  # type:WeChatOrder
         uni_res = wechat_order_client.create('JSAPI', body, 1,
                                              '%s/api/order/notify' % web_url,
-                                             user_id='oZDZcxIVPgABuLIbLi_ZEENVRzGM', out_trade_no=out_trade_no)
+                                             user_id=self.session['open_id'], out_trade_no=out_trade_no)
         appapi_params = wechat_order_client.get_appapi_params(uni_res['prepay_id'])
         res = {
             'appapi_params': appapi_params,

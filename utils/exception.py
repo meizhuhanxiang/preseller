@@ -47,6 +47,7 @@ class ServerError(BaseError):
     ARGS_ILLEGAL = (2, 'arguments illegal or not complete', '参数不合法或者不完整')
     ADDRESS_ID_NO_EXIST = (3, 'address_id: {args} is not exist', '地址id:{args} 不存在')
     ORDER_ID_ILLEGEL = (4, 'order_id: {args} is illegel', '订单id:{args} 不合法')
+    USER_NO_LOGIN = (5, 'user is not logined', '用户未登陆')
 
 class SyncError(BaseError):
     BASE_CODE = 40000

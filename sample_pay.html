@@ -1,0 +1,48 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>微信支付样例-支付</title>
+    <script type="text/javascript" src="static/js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">
+        //获取统一支付订单参数
+        function pay() {
+            var uni_data = '';
+            order_args = {"order_ids": [9], "address_id": 28}  //订单id列表，及地址id
+            $.ajax({
+                type: "POST",
+                url: "/api/order/add", // 点击支付按钮调用该接口，添加订单并获取支付参数
+                data: JSON.stringify(order_args),
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.code != 0) {
+                        alert(data.msg);
+                        if (data.code == 30005) { //用户未登陆, 直接跳转到登陆认证接口，并带上当前的url,认证登陆完毕再跳转回来
+                            window.location.href = "http://preseller.gsteps.cn/api/user/oauth" + "?current_url=" + window.location.href
+                        }
+                    } else {
+                        WeixinJSBridge.invoke(
+                                'getBrandWCPayRequest', data.res.appapi_params,
+                                function (res) {
+                                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                        alert('支付成功');
+                                    }
+                                    if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                                        alert('支付被取消');
+                                    }
+                                    if (res.err_msg == "get_brand_wcpay_request:fail") {
+                                        alert(JSON.stringify(res))
+                                    }
+                                }
+                        );
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="点我支付" , onclick="pay();"/>
+</body>
+</html>
