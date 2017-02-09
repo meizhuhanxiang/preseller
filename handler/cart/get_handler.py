@@ -56,7 +56,7 @@ class GetHandler(BaseHandler):
                 'commodity_title': commodity_model.title,
                 'count': order_model.count,
                 'options': options,
-                'thumbnail': '/%s/preseller/img/commodity/%s/attribute/%s.jpg' % (
+                'thumbnail': '%s/preseller/img/commodity/%s/attribute/%s.jpg' % (
                     self.get_inner_static_path(), commodity_id, selected_first_option),
                 'price': price * order_model.count
 

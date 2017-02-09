@@ -33,10 +33,10 @@ class IndexHandler(BaseHandler):
             'presell_count': commodity_model.presell_count,  # 总共想预售的数量
             'sold_count': commodity_model.sold_count,  # 已经卖的数量
             'satisfy_count': commodity_model.satisfy_count,  # 满多少件发货
-            'logo': '/%s/preseller/img/publisher/%s/logo.png' % (self.get_inner_static_path(), commodity_id),
+            'logo': '%s/preseller/img/publisher/%s/logo.png' % (self.get_inner_static_path(), commodity_id),
             'publisher_name': publisher_model.name,
             'cart_count': count,  # 购物袋中商品的数量
-            'detail': ['/%s/preseller/img/commodity/%s/detail/%s.jpg' % (self.get_inner_static_path(), commodity_id, i)
+            'detail': ['%s/preseller/img/commodity/%s/detail/%s.jpg' % (self.get_inner_static_path(), commodity_id, i)
                        for i in xrange(commodity_model.detail_img_count)]
         }
         recommends = []
