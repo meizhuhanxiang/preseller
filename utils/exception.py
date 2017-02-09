@@ -37,6 +37,7 @@ class DatabaseError(BaseError):
     BASE_CODE = 10000
     DATABASE_COMMIT_ERROR = (1, 'Database commit error:{args}', '提交数据库发生错误, 已回滚请重试, 错误信息:{args}')
 
+
 class NetworkError(BaseError):
     BASE_CODE = 20000
 
@@ -48,6 +49,9 @@ class ServerError(BaseError):
     ADDRESS_ID_NO_EXIST = (3, 'address_id: {args} is not exist', '地址id:{args} 不存在')
     ORDER_ID_ILLEGEL = (4, 'order_id: {args} is illegel', '订单id:{args} 不合法')
     USER_NO_LOGIN = (5, 'user is not logined', '用户未登陆')
+    CART_ADD_IDS_NOT_MATCH = (6, 'cart add ids is not match', '添加购物车提供的id不合法')
+    ORDER_STATUS_ILLEGAL = (6, 'order status {args} is not illegal', '订单查询状态参数"{args}"不存在或不合法')
+
 
 class SyncError(BaseError):
     BASE_CODE = 40000

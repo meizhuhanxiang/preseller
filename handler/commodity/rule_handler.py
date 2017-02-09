@@ -11,7 +11,7 @@ from model import OrderModel
 from utils.exception import *
 
 
-class PublisherHandler(BaseHandler):
+class RuleHandler(BaseHandler):
     @handler
     def post(self):
         commodity_id = self.get_json_argument('commodity_id')
@@ -20,6 +20,6 @@ class PublisherHandler(BaseHandler):
         if not commodity_model:
             raise ServerError(ServerError.ARGS_ILLEGAL)
         res = {
-            'detail': '/%s/preseller/img/commodity/%s/publisher.jpg' % (self.get_inner_static_path(), commodity_id)
+            'detail': '/%s/preseller/img/commodity/%s/rule.jpg' % (self.get_inner_static_path(), commodity_id)
         }
         return res

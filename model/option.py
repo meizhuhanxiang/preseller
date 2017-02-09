@@ -29,7 +29,7 @@ class OptionModel(Base):
     option_name = Column(String(20), nullable=False, doc="具体分类名字")
     cn_option_name = Column(String(20), nullable=False, doc="中文具体分类名字")
     default = Column(BOOLEAN, nullable=False, server_default='0', doc="是否是已选项")
-    weight = Column(Integer, nullable=False, server_default='0', doc="每种类型的价格权重")
+    weight = Column(Float(precision=2), nullable=False, server_default='0', doc="每种类型的价格权重")
     desc = Column(String(30), nullable=True, doc="属性描述")
     index = Column(Integer, nullable=False, doc="排列顺序")
     is_del = Column(BOOLEAN, nullable=False, server_default='0', doc="逻辑删除, true(删除)|false(未删除)")

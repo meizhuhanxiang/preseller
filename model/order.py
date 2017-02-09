@@ -29,8 +29,8 @@ class OrderModel(Base):
     status = Column(Integer, nullable=False, doc="订单状态")
 
     address_id = Column(Integer, nullable=True, doc="收货人信息")
-    order_no = Column(String(30), nullable=True, doc="货物订单号")
-    out_trade_no = Column(String(30), nullable=True, doc="统一支付订单号")
+    order_no = Column(String(128), nullable=True, doc="货物订单号")
+    out_trade_no = Column(String(128), nullable=True, doc="统一支付订单号")
     cart_time = Column(TIMESTAMP, nullable=True, doc="加入购物车时间")
     pay_time = Column(TIMESTAMP, nullable=True, doc="付款时间")
     send_time = Column(TIMESTAMP, nullable=True, doc="发货时间")
@@ -48,3 +48,8 @@ class OrderModel(Base):
     STATUS_WAIT_RECEIVE = 4
     STATUS_COMPLETE = 5
     STATUS_CLOSE = 6
+    STATUS_ALL = 7
+
+    STATUS_LIST = [STATUS_CART, STATUS_WAIT_PAY, STATUS_WAIT_SEND, STATUS_WAIT_RECEIVE, STATUS_COMPLETE, STATUS_CLOSE,
+                   STATUS_ALL]
+    STATUS_PAY_LIST = [STATUS_WAIT_SEND, STATUS_WAIT_RECEIVE, STATUS_COMPLETE]

@@ -1,13 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import json
-from handler.base.base_handler import BaseHandler
+import datetime
+from handler.base.base_handler import BaseHandler, handler
+from model import OrderModel
 
 
 class DeleteHandler(BaseHandler):
+    @handler
     def post(self):
-        # 期望接收到的post_json
-        # {'codes':['123465789542525', '223465789543242']}
-        res = {}
-        # 返回数据，如果reason为空则表示成功，否则表示出错
-        self.write(json.dumps({'reason': '', 'res': res}))
+        order_ids = self.get_json_argument('order_ids')
+        order_models = self.model_config.filter_all(OrderModel, user_id=1,
+                                                    filters=OrderModel.id.in_(tuple(order_ids)))
+        for order_model in order_models:  # type:OrderModel
+            order_model.is_del = True
+            current_status = order_model.status
+            order_model.status = OrderModel.STATUS_CLOSE
+            order_model.close_type = current_status
+            order_model.close_time = datetime.datetime.now()
+        self.model_config.commit()

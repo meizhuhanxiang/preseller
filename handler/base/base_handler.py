@@ -8,7 +8,7 @@ import tornado.options
 import utils.config
 import tornado.httpserver
 from functools import wraps
-from traceback import print_exc
+from traceback import format_exc
 from utils.exception import *
 from utils.logger import api_logger
 from model import ModelConfig
@@ -20,13 +20,14 @@ def handler(fun):
     def wrapper(self, *args, **kwargs):
         code, msg, res = 0, 'success', None
         try:
-            if not self.session.has_key('union_id'):
-                print '用户没有登录'
+            # if not self.session.get('open_id', ''):
+            #     if self.__class__.__name__ != 'CheckloginHandler':
+            #         raise ServerError(ServerError.USER_NO_LOGIN)
             res = fun(self, *args, **kwargs)
         except BaseError, e:
             code, msg = e.split()
         except Exception, e:
-            print_exc()
+            self.logger.error(format_exc())
             code, msg = 65535, 'UnHandler Error: {e}'.format(e=str(e))
         resp = {'code': code, 'msg': u'%s' % msg, 'res': res}
         resp = json.dumps(resp)
@@ -47,6 +48,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def initialize(self):
         self.model_config = ModelConfig()
+        self.get_secure_cookie("session_id")
         self.session = session.Session(self.application.session_manager, self)
         self.logger = api_logger()
         self.logger.info(

@@ -26,8 +26,7 @@ class AddHandler(BaseHandler):
         total_price = 0
         desc = []
         for order_id in order_ids:
-            order_model = self.model_config.first(OrderModel, user_id=1, id=order_id,
-                                                  status=OrderModel.STATUS_CART)  # type: OrderModel
+            order_model = self.model_config.first(OrderModel, user_id=1, id=order_id)  # type: OrderModel
             if not order_model:
                 raise ServerError(ServerError.ORDER_ID_ILLEGEL, args=order_id)
             selected_option_ids = order_model.selected_option_ids
@@ -42,6 +41,8 @@ class AddHandler(BaseHandler):
             total_price += price * order_model.count
             order_model.out_trade_no = out_trade_no
             order_model.address_id = address_id
+            order_model.status = order_model.STATUS_WAIT_PAY
+
         desc = ','.join(desc)
         if len(desc) >= 100:
             desc = '%s...' % desc[:100]
@@ -53,14 +54,16 @@ class AddHandler(BaseHandler):
         mchid = wechat_conf['mchid']
         mch_cert = wechat_conf['mch_cert']
         mch_key = wechat_conf['mch_key']
-        wechat_order_client = WeChatPay(app_id, key, mchid, mch_cert=mch_cert,
-                                        mch_key=mch_key).order  # type:WeChatOrder
-        uni_res = wechat_order_client.create('JSAPI', body, 1,
+        wechat_client = WeChatPay(app_id, key, mchid, mch_cert=mch_cert, mch_key=mch_key)  # type:WeChatOrder
+        wechat_order_client = wechat_client.order
+        uni_res = wechat_order_client.create('JSAPI', body, int(total_price * 100),
                                              '%s/api/order/notify' % web_url,
                                              user_id=self.session['open_id'], out_trade_no=out_trade_no)
-        appapi_params = wechat_order_client.get_appapi_params(uni_res['prepay_id'])
+        wechat_jsapi_client = wechat_client.jsapi
+        appapi_params = wechat_jsapi_client.get_jsapi_params(uni_res['prepay_id'])
         res = {
             'appapi_params': appapi_params,
             'out_trade_no': out_trade_no
         }
+        self.model_config.commit()
         return res

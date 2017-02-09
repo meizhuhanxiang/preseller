@@ -19,7 +19,6 @@ class OauthHandler(BaseHandler):
     def get(self):
         current_url = self.get_argument('current_url', '')
         self.session['current_url'] = current_url
-        print current_url, '===='
         web_url = utils.config.get('global', 'url')
         wechat_conf = utils.config.get_section('wechat')
         app_id = wechat_conf['appid']
