@@ -52,6 +52,7 @@ def main():
                       action="store", type="string", default="", dest="port")
     (options, args) = parser.parse_args()
     port = options.port
+    print port
     if not port:
         port = utils.config.get("global", "port")
     debug_mode = int(utils.config.get('global', 'debug'))

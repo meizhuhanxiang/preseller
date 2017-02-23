@@ -18,12 +18,17 @@ class GetHandler(BaseHandler):
     @handler
     def post(self):
         order_ids = self.get_json_argument('order_ids', default=[], allow_null=True)
-
+        ignore = self.get_json_argument('ignore', default=False, allow_null=True)
+        print ignore
+        if str(ignore).lower() == 'true':
+            status = OrderModel.STATUS_ORDER_IMMEDIATELY
+        else:
+            status = OrderModel.STATUS_CART
         if not order_ids:
-            order_models = self.model_config.all(OrderModel, user_id=1, status=OrderModel.STATUS_CART)
+            order_models = self.model_config.all(OrderModel, user_id=1, status=status)
         else:
             order_models = self.model_config.filter_all(OrderModel, OrderModel.id.in_(tuple(order_ids)), user_id=1,
-                                                        status=OrderModel.STATUS_CART,
+                                                        status=status,
                                                         )
         orders = []
         total_price = 0
@@ -63,7 +68,7 @@ class GetHandler(BaseHandler):
             }
             orders.append(order)
         res = {
-            'total_price': total_price,
+            'total_price': round(total_price, 2),
             'orders': orders
         }
         return res

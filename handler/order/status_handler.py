@@ -17,7 +17,9 @@ class StatusHandler(BaseHandler):
         if order_status not in OrderModel.STATUS_LIST:
             raise ServerError(ServerError.ORDER_STATUS_ILLEGAL, args=order_status)
         if order_status == OrderModel.STATUS_ALL:
-            order_models = self.model_config.all(OrderModel, user_id=1)
+            order_models = self.model_config.filter_all(OrderModel,
+                                                        OrderModel.status.in_(tuple(OrderModel.STATUS_MY_ORDER_LIST)),
+                                                        user_id=1)
         else:
             order_models = self.model_config.all(OrderModel, user_id=1, status=order_status)
 

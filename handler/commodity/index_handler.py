@@ -28,7 +28,7 @@ class IndexHandler(BaseHandler):
             'commodity_id': commodity_id,  # 商品id
             'title': commodity_model.title,
             'brief': commodity_model.brief,
-            'navigation': '/%s/preseller/img/commodity/%s/navigation.png' % (
+            'navigation': '%s/preseller/img/commodity/%s/navigation.png' % (
                 self.get_inner_static_path(), commodity_id),
             'presell_count': commodity_model.presell_count,  # 总共想预售的数量
             'sold_count': commodity_model.sold_count,  # 已经卖的数量

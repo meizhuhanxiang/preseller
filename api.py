@@ -571,6 +571,7 @@ if __name__ == "__main__":
         template_path=os.path.join(os.path.dirname(__file__), "templates")
     )
     http_server = tornado.httpserver.HTTPServer(app)
+    print options.port
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
 

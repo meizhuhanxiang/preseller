@@ -8,6 +8,7 @@ from sqlalchemy import desc
 import utils.config
 from model import *
 from utils.exception import DatabaseError
+from sqlalchemy.exc import DisconnectionError
 
 __author__ = 'guoguangchuan'
 
@@ -18,13 +19,27 @@ db_pssswd = utils.config.get("preseller_db", "passwd")
 db_database = utils.config.get("preseller_db", "database")
 
 engine = create_engine(
-    'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % (db_user, db_pssswd, db_host, db_port, db_database))
-#db_session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
+    'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % (db_user, db_pssswd, db_host, db_port, db_database), pool_size=100,
+    pool_recycle=3600)
+# db_session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
 db_session = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
-#Base.query = db_session.query_property()
-#Base.metadata.create_all(engine, checkfirst=True)
 
+# Base.query = db_session.query_property()
+# Base.metadata.create_all(engine, checkfirst=True)
+
+def checkout_listener(dbapi_con, con_record, con_proxy):
+    try:
+        try:
+            dbapi_con.ping(False)
+        except TypeError:
+            dbapi_con.ping()
+    except dbapi_con.OperationalError as exc:
+        if exc.args[0] in (2006, 2013, 2014, 2045, 2055):
+            raise DisconnectionError()
+        else:
+            raise
+event.listen(engine, 'checkout', checkout_listener)
 
 class Configure(object):
     DEBUG = False

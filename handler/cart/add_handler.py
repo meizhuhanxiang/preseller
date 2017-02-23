@@ -19,6 +19,7 @@ class AddHandler(BaseHandler):
     def post(self):
         commodity_id = self.get_json_argument('commodity_id')
         selected_option_ids = self.get_json_argument('selected_option_ids')
+        immediately = self.get_json_argument('immediately', False, allow_null=True)
         selected_option_ids = sorted(list(set(selected_option_ids)))
         count = self.get_json_argument('count')
         order_model = self.model_config.first(OrderModel, commodity_id=commodity_id, selected_option_ids=selected_option_ids, status=OrderModel.STATUS_CART)#type:OrderModel
@@ -41,12 +42,14 @@ class AddHandler(BaseHandler):
                 attr_names.append(attribute_model.attr_name)
             if set(selected_attr_names) != set(attr_names):
                 raise ServerError(ServerError.CART_ADD_IDS_NOT_MATCH)
-
+            order_status = OrderModel.STATUS_CART
+            if True == immediately:
+                order_status = OrderModel.STATUS_ORDER_IMMEDIATELY
             order_model = OrderModel(user_id=1, commodity_id=commodity_id,
                                      selected_option_ids=selected_option_ids, count=count,
                                      cart_time=datetime.datetime.now(),
                                      order_no=str(uuid.uuid1()).replace('-', ''),
-                                     status=OrderModel.STATUS_CART)
+                                     status=order_status)
             self.model_config.add(order_model)
         order_models = self.model_config.all(OrderModel, user_id=1, status=OrderModel.STATUS_CART)
         res = {
