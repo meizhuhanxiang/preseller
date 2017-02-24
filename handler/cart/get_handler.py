@@ -18,9 +18,10 @@ class GetHandler(BaseHandler):
     @handler
     def post(self):
         order_ids = self.get_json_argument('order_ids', default=[], allow_null=True)
-        ignore = self.get_json_argument('ignore', default=False, allow_null=True)
-        print ignore
-        if str(ignore).lower() == 'true':
+        immediately = self.get_json_argument('immediately', default=False, allow_null=True)
+
+        if str(immediately).lower() == 'true':
+            print immediately
             status = OrderModel.STATUS_ORDER_IMMEDIATELY
         else:
             status = OrderModel.STATUS_CART

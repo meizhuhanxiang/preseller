@@ -12,8 +12,9 @@ from model.option import OptionModel
 from model.city import CityModel
 from model.base import List, Dict, Base
 from model.config import Configure as ModelConfig
+from model.detail import DetailModel
 
 __author__ = 'guoguangchuan'
 
 __all__ = ['List', 'Dict', 'Base', 'AddressModel', 'CommodityModel', 'OrderModel', 'AttributeModel', 'OptionModel',
-           'PublisherModel', 'RecommendModel', 'UserModel', 'ModelConfig', 'CityModel']
+           'PublisherModel', 'RecommendModel', 'UserModel', 'ModelConfig', 'CityModel', 'DetailModel']

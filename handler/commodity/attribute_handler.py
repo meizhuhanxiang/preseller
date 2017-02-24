@@ -96,7 +96,7 @@ class AttributeHandler(BaseHandler):
         price = commodity_model.base_price
         for option_id, weight in select_option.items():
             price += weight
-        res['sample_img'] = '/%s/preseller/img/commodity/%s/attribute/%s.jpg' % (
+        res['sample_img'] = '%s/preseller/img/commodity/%s/attribute/%s.jpg' % (
             self.get_inner_static_path(), commodity_id, selected_first_option)
         res['price'] = price * count
         res['attributes'] = attributes

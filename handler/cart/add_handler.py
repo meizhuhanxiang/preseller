@@ -43,7 +43,7 @@ class AddHandler(BaseHandler):
             if set(selected_attr_names) != set(attr_names):
                 raise ServerError(ServerError.CART_ADD_IDS_NOT_MATCH)
             order_status = OrderModel.STATUS_CART
-            if True == immediately:
+            if str(immediately).lower() == 'true':
                 order_status = OrderModel.STATUS_ORDER_IMMEDIATELY
             order_model = OrderModel(user_id=1, commodity_id=commodity_id,
                                      selected_option_ids=selected_option_ids, count=count,
